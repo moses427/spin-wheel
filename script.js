@@ -1,9 +1,9 @@
 const wheel = document.getElementById("wheel");
 const ctx = wheel.getContext("2d");
-const btn = document.getElementById("spin-btn");
-const resultText = document.getElementById("result");
+const spinBtn = document.getElementById("spin-btn");
+const editBtn = document.getElementById("edit-btn");
 
-const segments = [
+let segments = [
   "Free Lifetime Access",
   "10% Off",
   "Better Luck Next Time",
@@ -15,21 +15,18 @@ const segments = [
 const colors = ["#FF6333", "#FFBD33", "#33FF57", "#33C4FF", "#A833FF", "#FF3380"];
 const size = 500;
 const center = size / 2;
-const numSegments = segments.length;
-
 let angle = 0;
 
 function drawWheel() {
-  const arcSize = (2 * Math.PI) / numSegments;
-
-  for (let i = 0; i < numSegments; i++) {
+  const arcSize = (2 * Math.PI) / segments.length;
+  for (let i = 0; i < segments.length; i++) {
     const start = i * arcSize;
     const end = start + arcSize;
 
     ctx.beginPath();
     ctx.moveTo(center, center);
     ctx.arc(center, center, center - 10, start, end);
-    ctx.fillStyle = colors[i];
+    ctx.fillStyle = colors[i % colors.length];
     ctx.fill();
 
     ctx.save();
@@ -46,8 +43,8 @@ function drawWheel() {
   }
 }
 
-function spin() {
-  btn.disabled = true;
+function spinWheel() {
+  spinBtn.disabled = true;
   const randomSpin = Math.random() * 5000 + 3000;
   const spinEase = randomSpin + angle;
   const duration = 4000;
@@ -62,7 +59,7 @@ function spin() {
     ctx.clearRect(0, 0, size, size);
     ctx.save();
     ctx.translate(center, center);
-    ctx.rotate(angle * Math.PI / 180);
+    ctx.rotate((angle * Math.PI) / 180);
     ctx.translate(-center, -center);
     drawWheel();
     ctx.restore();
@@ -75,10 +72,10 @@ function spin() {
 }
 
 function endSpin() {
-  const rotated = (angle % 360) / (360 / numSegments);
-  const index = Math.floor(numSegments - rotated) % numSegments;
-  resultText.innerText = `Result: ${segments[index]}`;
-  btn.disabled = false;
+  const rotated = (angle % 360) / (360 / segments.length);
+  const index = Math.floor(segments.length - rotated) % segments.length;
+  alert(`🎉 You won: ${segments[index]} 🎉`);
+  spinBtn.disabled = false;
 }
 
 function easeOutCubic(t, b, c, d) {
@@ -87,5 +84,18 @@ function easeOutCubic(t, b, c, d) {
   return c * (t * t * t + 1) + b;
 }
 
+// Edit button functionality
+editBtn.addEventListener("click", () => {
+  const newPrizes = prompt(
+    "Enter prizes separated by commas:",
+    segments.join(", ")
+  );
+  if (newPrizes) {
+    segments = newPrizes.split(",").map(s => s.trim()).filter(s => s);
+    drawWheel();
+  }
+});
+
+spinBtn.addEventListener("click", spinWheel);
+
 drawWheel();
-btn.addEventListener("click", spin);
