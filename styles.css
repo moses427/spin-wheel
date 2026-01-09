@@ -1,28 +1,46 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: #1a1a2e;
-    color: white;
-    font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #1a1a2e;
+  color: white;
+  font-family: Arial, sans-serif;
 }
 
 .wheel-container {
-    text-align: center;
+  text-align: center;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+}
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
 }
 
 #spin-btn {
-    margin-top: 20px;
-    padding: 12px 20px;
-    font-size: 18px;
-    background: #e94560;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 8px;
+  background: #e94560;
 }
 
-#spin-btn:active {
-    transform: scale(0.98);
+#edit-btn {
+  background: #33c1ff;
+}
+
+button:active {
+  transform: scale(0.98);
 }
